@@ -1,0 +1,6 @@
+---
+# handlers file for router
+- name: Reload firewalld
+  become: true
+  firewalld:
+    state: reload

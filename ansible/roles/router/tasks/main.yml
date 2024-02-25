@@ -1,0 +1,42 @@
+---
+# tasks file for router
+
+- name: Enable IP forwarding
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+    state: present
+    sysctl_set: true
+
+- name: Set connection zone for enp0s20f0u3 to internal
+  command: nmcli c mod enp0s20f0u3 connection.zone internal
+
+- name: Set connection zone for enp88s0 to external
+  command: nmcli c mod enp88s0 connection.zone external
+
+- name: Get active zones
+  command: firewall-cmd --get-active-zones
+  register: active_zones_output
+
+- name: Add masquerade rule to external zone
+  command: firewall-cmd --zone=external --add-masquerade --permanent
+  when: "'external' not in active_zones_output.stdout"
+
+- name: Add masquerade rule to internal zone
+  command: firewall-cmd --zone=internal --add-masquerade --permanent
+  when: "'internal' not in active_zones_output.stdout"
+
+- name: Reload firewalld
+  command: firewall-cmd --reload
+
+- name: Add POSTROUTING MASQUERADE rule
+  command: firewall-cmd --direct --add-rule ipv4 nat POSTROUTING 0 -o enp88s0 -j MASQUERADE
+
+- name: Add FORWARD rule for enp0s20f0u3 to enp88s0
+  command: firewall-cmd --direct --add-rule ipv4 filter FORWARD 0 -i enp0s20f0u3 -o enp88s0 -j ACCEPT
+
+- name: Add FORWARD rule for enp88s0 to enp0s20f0u3
+  command: firewall-cmd --direct --add-rule ipv4 filter FORWARD 0 -i enp88s0 -o enp0s20f0u3 -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+- name: Reload firewalld
+  command: firewall-cmd --reload

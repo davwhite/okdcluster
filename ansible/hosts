@@ -1,0 +1,16 @@
+# hosts for ansible automation
+[control_plane]
+control_plane1.okd.davenet.local
+control_plane2.okd.davenet.local
+control_plane3.okd.davenet.local
+
+[compute]
+compute1.okd.davenet.local
+compute2.okd.davenet.local
+compute3.okd.davenet.local
+
+[bootstrap]
+bootstrap_node.okd.davenet.local
+
+[ha_proxy]
+nuc11-02.davenet.local

@@ -1,0 +1,23 @@
+; Forward zone file for example.com
+$TTL 86400
+@       IN      SOA     ns1.{{ domain_name }}. admin{{ domain_name }}. (
+                        2022022301      ; Serial
+                        3600            ; Refresh
+                        1800            ; Retry
+                        604800          ; Expire
+                        86400 )         ; Minimum TTL
+
+        IN      NS      ns1.{{ domain_name }}.
+ns1     IN      A       10.0.1.1
+bootstrap.{{ cluster_name }}     IN      A       10.0.1.10
+controlplane1.{{ cluster_name }}     IN      A       10.0.1.11
+controlplane2.{{ cluster_name }}     IN      A       10.0.1.12
+controlplane3.{{ cluster_name }}     IN      A       10.0.1.13
+compute1.{{ cluster_name }}     IN      A       10.0.1.14
+compute2.{{ cluster_name }}     IN      A       10.0.1.15
+compute3.{{ cluster_name }}     IN      A       10.0.1.16
+api-api.{{ cluster_name }} IN      A       10.0.1.90
+api.{{ cluster_name }} IN      CNAME       api-api.{{ cluster_name }}.{{ domain_name }}.
+api-int.{{ cluster_name }} IN      CNAME       api-api.{{ cluster_name }}.{{ domain_name }}.
+okd-ui.{{ cluster_name }}    IN    A    10.0.1.91
+*.apps.{{ cluster_name }}    IN    CNAME    okd-ui.{{ cluster_name }}.{{ domain_name }}.

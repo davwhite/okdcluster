@@ -1,0 +1,5 @@
+---
+# defaults file for router
+
+internal_interface: enp0s20f0u3
+external_interface: enp88s0

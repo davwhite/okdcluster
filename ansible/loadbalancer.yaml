@@ -1,0 +1,37 @@
+---
+# - name: Install HAProxy
+#   hosts: ha_proxy
+#   become: yes
+
+#   roles:
+#     - load-balancer
+
+# - name: Apply firewall rules
+#   hosts: ha_proxy
+#   become: yes
+#   roles:
+#     - open_ports
+
+# - name: Deploy HAProxy
+#   hosts: ha_proxy
+#   become: yes
+#   roles:
+#     - haproxy
+
+# - hosts: ha_proxy
+#   become: yes
+#   roles:
+#     - router
+
+# dns_playbook.yml
+
+- name: Configure DNS server
+  hosts: ha_proxy
+  become: yes
+  roles:
+    - dns
+  vars:
+    domain_name: "okdnet.local"
+    forward_zone: "forward.zone"
+    reverse_zone: "reverse.zone"
+    cluster_name: "okd"

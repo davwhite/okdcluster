@@ -1,0 +1,15 @@
+; Zone file for pxe.local
+$TTL 86400
+@       IN      SOA     ns1.pxe.local. admin.pxe.local. (
+                        2022022301      ; Serial
+                        3600            ; Refresh
+                        1800            ; Retry
+                        604800          ; Expire
+                        86400 )         ; Minimum TTL
+
+        IN      NS      ns1.pxe.local.
+
+ns1     IN      A       10.0.1.1
+www     IN      A       10.0.1.10
+dhcp    IN      A       10.0.1.20    ; DHCP server IP address
+tftp    IN      A       10.0.1.30    ; TFTP server IP address

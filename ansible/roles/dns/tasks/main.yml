@@ -1,0 +1,59 @@
+---
+# tasks file for dns
+# roles/dns/tasks/main.yml
+
+- name: Install DNS server packages
+  package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - bind
+    - bind-utils
+
+- name: Copy named configuration file
+  template:
+    src: named.conf.j2
+    dest: /etc/named.conf
+  notify: Reload named
+
+- name: Copy forward zone file
+  template:
+    src: forward.zone.j2
+    dest: /var/named/forward.zone
+  notify: Reload named
+
+- name: Copy reverse zone file
+  template:
+    src: reverse.zone.j2
+    dest: /var/named/reverse.zone
+  notify: Reload named
+
+- name: Copy iso zone file
+  template:
+    src: iso.local.j2
+    dest: /var/named/iso.local.hosts
+  notify: Reload named
+
+- name: Copy isoimage zone file
+  template:
+    src: isoimage.local.j2
+    dest: /var/named/isoimage.local.hosts
+  notify: Reload named
+
+- name: Copy pxe zone file
+  template:
+    src: pxe.local.j2
+    dest: /var/named/pxe.local.hosts
+  notify: Reload named
+
+- name: Copy pxeboot zone file
+  template:
+    src: pxeboot.local.j2
+    dest: /var/named/pxeboot.local.hosts
+  notify: Reload named
+
+- name: Start and enable named service
+  service:
+    name: named
+    state: started
+    enabled: yes
