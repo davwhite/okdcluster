@@ -1,0 +1,17 @@
+---
+# handlers file for dhcp
+
+- name: Restart DHCP
+  service:
+    name: dhcpd
+    state: restarted
+
+- name: Restart TFTP service
+  service:
+    name: "{{ tftp_service_name }}"
+    state: restarted
+
+- name: Restart HTTPD service
+  service:
+    name: "{{ httpd_service_name }}"
+    state: restarted

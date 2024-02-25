@@ -1,0 +1,21 @@
+---
+# defaults file for dhcp
+
+dhcp_ip_range_start: "10.0.1.100"
+dhcp_ip_range_end: "10.0.1.200"
+dhcp_subnet: "10.0.1.0"
+dhcp_subnet_mask: "255.255.255.0"
+dhcp_default_gateway: "10.0.1.1"
+dhcp_dns_server: "10.0.1.1"
+dhcp_broadcast_address: "10.0.1.255"
+domain_name: "okdnet.local"
+
+# TFTP
+tftp_root_directory: /var/lib/tftpboot
+tftp_service_name: tftp
+tftp_package_name: tftp-server
+
+# httpd
+httpd_document_root: /var/www/html
+httpd_service_name: httpd
+httpd_package_name: httpd

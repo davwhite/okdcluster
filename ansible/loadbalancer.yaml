@@ -25,13 +25,24 @@
 
 # dns_playbook.yml
 
-- name: Configure DNS server
+# - name: Configure DNS server
+#   hosts: ha_proxy
+#   become: yes
+#   roles:
+#     - dns
+#   vars:
+#     domain_name: "okdnet.local"
+#     forward_zone: "forward.zone"
+#     reverse_zone: "reverse.zone"
+#     cluster_name: "okd"
+
+- name: Configure DHCP server
   hosts: ha_proxy
   become: yes
   roles:
-    - dns
-  vars:
-    domain_name: "okdnet.local"
-    forward_zone: "forward.zone"
-    reverse_zone: "reverse.zone"
-    cluster_name: "okd"
+    - dhcp
+  # vars:
+  #   domain_name: "okdnet.local"
+  #   forward_zone: "forward.zone"
+  #   reverse_zone: "reverse.zone"
+  #   cluster_name: "okd"

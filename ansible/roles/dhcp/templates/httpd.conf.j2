@@ -1,0 +1,19 @@
+# Example HTTPD configuration file
+ServerRoot "/etc/httpd"
+
+Listen 80
+
+Include conf.modules.d/*.conf
+
+User apache
+Group apache
+
+DocumentRoot "{{ httpd_document_root }}"
+<Directory "{{ httpd_document_root }}">
+    Options Indexes FollowSymLinks
+    AllowOverride None
+    Require all granted
+</Directory>
+
+ErrorLog "logs/error_log"
+LogLevel warn

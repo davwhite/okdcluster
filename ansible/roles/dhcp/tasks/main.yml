@@ -1,0 +1,87 @@
+---
+# tasks file for dhcp
+
+# Install DHCP tftp httpd syslinux
+- name: Install DHCP TFTP HTTPD SYSLINUX packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - dhcp-server
+    - tftp-server
+    - httpd
+    - syslinux
+
+- name: Copy DHCP configuration file
+  template:
+    src: dhcpd.conf.j2
+    dest: /etc/dhcp/dhcpd.conf
+  notify: Restart DHCP
+
+- name: Ensure DHCP service is enabled and running
+  systemd:
+    name: dhcpd
+    enabled: yes
+    state: started
+
+# TFTP
+- name: Install TFTP server package
+  package:
+    name: "{{ tftp_package_name }}"
+    state: present
+
+- name: Create TFTP root directory
+  file:
+    path: "{{ tftp_root_directory }}"
+    state: directory
+    mode: '0755'
+
+- name: Create xinetd.d directory
+  file:
+    path: /etc/xinetd.d
+    state: directory
+
+- name: Copy TFTP server configuration file
+  template:
+    src: tftp.conf.j2
+    dest: /etc/xinetd.d/tftp
+  notify: Restart TFTP service
+
+- name: Ensure TFTP service is enabled and running
+  service:
+    name: "{{ tftp_service_name }}"
+    state: started
+    enabled: yes
+
+# HTTPD
+- name: Install HTTPD server package
+  package:
+    name: "{{ httpd_package_name }}"
+    state: present
+
+- name: Copy HTTPD server configuration file
+  template:
+    src: httpd.conf.j2
+    dest: /etc/httpd/conf/httpd.conf
+  notify: Restart HTTPD service
+
+- name: Ensure HTTPD service is enabled and running
+  service:
+    name: "{{ httpd_service_name }}"
+    state: started
+    enabled: yes
+
+
+
+# - name: Ensure HTTPD service is enabled and running
+#   systemd:
+#     name: httpd
+#     enabled: yes
+#     state: started
+
+# - name: Copy syslinux files
+#   copy:
+#     src: syslinux
+#     dest: /var/lib/tftpboot
+#   notify: Restart TFTP
+

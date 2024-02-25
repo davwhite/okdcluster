@@ -1,0 +1,39 @@
+# Global DHCP options
+option domain-name "{{ domain_name }}";
+option domain-name-servers {{ dhcp_dns_server }};
+
+# Default lease time (seconds)
+default-lease-time 600;
+# Maximum lease time (seconds)
+max-lease-time 7200;
+
+# DHCP subnet configuration
+subnet {{ dhcp_subnet }} netmask {{ dhcp_subnet_mask }} {
+    # IP address range to offer to clients
+    range {{ dhcp_ip_range_start }} {{ dhcp_ip_range_end }};
+    # Default gateway
+    option routers {{ dhcp_default_gateway }};
+    # DNS server
+    option domain-name-servers {{ dhcp_dns_server }};
+}
+
+
+
+
+# subnet {{ dhcp_subnet_mask }} {
+#     range {{ dhcp_ip_range_start }} {{ dhcp_ip_range_end }};
+#     option routers {{ dhcp_default_gateway }};
+#     option domain-name "pxe.local";      # DNS domain name
+#     option domain-name-servers {{ dhcp_dns_server }};
+#     option broadcast-address {{ dhcp_broadcast_address }};  # Broadcast address
+
+#     # PXE boot configuration
+#     filename "pxelinux.0";               # PXE boot loader file
+#     next-server {{ dhcp_dns_server }};            # TFTP server IP address
+
+#     # Additional DHCP options for network boot
+#     option root-path "tftp://{{ dhcp_dns_server }}/pxelinux.0";  # Path to PXE boot loader
+
+#     # Specify interface to listen on
+#     interface enp0s20f0u3;
+# }
